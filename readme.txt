@@ -23,4 +23,4 @@ The root reducer, along with any other combined reducers, determines how to upda
 The updated state is returned from the root reducer and stored in the Redux store.
 Components subscribed to changes in the Redux store receive the updated state and re-render accordingly.
 
-----------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
