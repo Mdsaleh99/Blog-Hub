@@ -7,7 +7,6 @@ import SignUp from './pages/SignUp'
 import Dashboard from './pages/Dashboard'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import ThemeProvider from './components/ThemeProvider'
 import PrivateRoute from './components/PrivateRoute'
 
 function App() {
