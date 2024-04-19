@@ -2,11 +2,11 @@ import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import {useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { signInFailure, signInStart, signInSuccess } from '../redux/user/userSlice.js'
-import OAuth from '../components/OAuth.jsx'
+import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice'
+import OAuth from '../components/OAuth'
 
 
-function SignIn() {
+export default function SignIn() {
   const [formData, setFormData] = useState({})
   // const [errrMessage, setErrorMessage] = useState(null)
   // const [loading, setLoading] = useState(false)
@@ -14,7 +14,7 @@ function SignIn() {
 
   // react-redux-toolkit
   const dispatch = useDispatch()
-  const { loading, error: errrMessage } = useSelector(state => state.user)
+  const { loading, error: errorMessage } = useSelector(state => state.user)
 
 
 
@@ -92,13 +92,12 @@ function SignIn() {
               <TextInput placeholder='********' type='password' id='password' onChange={handleChange} />
             </div>
             <Button gradientDuoTone="purpleToPink" type='submit' disabled={loading}>
-              {
-                loading ? (
+              {loading ? (
                   <>
                     <Spinner size='sm'/>
                     <span className='pl-3'>loading...</span>
                   </>
-                ) : 'Sign In'
+                ) : ('Sign In')
               }
             </Button>
             <OAuth />
@@ -108,10 +107,11 @@ function SignIn() {
           <Link to='/sign-up' className='text-blue-500'>Sign Up</Link>
         </div>
         {
-          errrMessage && 
-          <Alert className='mt-4' color='failure'>
-            {errrMessage}
-          </Alert>
+          errorMessage && (
+            <Alert className='mt-4' color='failure'>
+              {errorMessage}
+            </Alert>
+          )
         }
         </div>
         
@@ -120,4 +120,3 @@ function SignIn() {
   )
 }
 
-export default SignIn

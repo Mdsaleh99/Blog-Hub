@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { signInSuccess } from '../redux/user/userSlice.js'
 import { useNavigate } from 'react-router-dom'
 
-function OAuth() {
+export default function OAuth() {
     const auth = getAuth(app)
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -27,7 +27,7 @@ function OAuth() {
                 body: JSON.stringify({
                     name: resultFromGoogle.user.displayName,
                     email: resultFromGoogle.user.email,
-                    photoUrl: resultFromGoogle.user.photoURL
+                    googlePhotoUrl: resultFromGoogle.user.photoURL
                 })
             })
             const data = await res.json()
@@ -46,5 +46,3 @@ function OAuth() {
     </Button>
   )
 }
-
-export default OAuth

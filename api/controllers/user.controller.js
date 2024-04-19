@@ -10,7 +10,7 @@ export const test = (req, res) => {
 export const updateUser = async (req, res, next) => {
     // console.log(req.user);
     if(req.user.id !== req.params.userId){
-        return next(errorHandler(401, 'Your are not authorized to update this user'))
+        return next(errorHandler(403, 'Your are not authorized to update this user'))
     }
     
     if(req.body.password){
@@ -35,19 +35,20 @@ export const updateUser = async (req, res, next) => {
         if(!req.body.userName.match(/^[a-zA-Z0-9]+$/)){
             return next(errorHandler(400, 'Username must contain only letters and numbers'))
         }
+    }
         try {
             const updatedUser = await User.findByIdAndUpdate(req.params.userId, {
                 $set: {
                     userName: req.body.userName,
                     email: req.body.email,
+                    profilePicture: req.body.profilePicture,
                     password: req.body.password,
-                    profilePicture: req.body.profilePicture
+                    
                 }
-            }, {new: true})  // this new: true will return the updated user details
+            }, {new: true})  // this new: true will return the updated user details from above
             const {password, ...rest} = updatedUser._doc
             res.status(200).json(rest)
         } catch (error) {
             next(error)
         }
-    }
 }
