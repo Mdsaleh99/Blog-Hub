@@ -74,3 +74,16 @@ export const getPosts = async (req, res, next) => {
         next(error)
     }
 }
+
+
+/**
+ * req.query.userId: This typically refers to the value of the userId parameter from the query string of a URL. For example, if the URL is /?userId=123, req.query.userId would be '123'.
+{ userId: req.query.userId }: This creates an object with a property userId whose value is req.query.userId. However, this object is only created if req.query.userId is truthy (i.e., not null, undefined, false, 0, '', or NaN).
+&&: The logical AND operator (&&) is used here to conditionally check if req.query.userId exists and has a truthy value.
+...(expression): This is the object spread syntax, which allows you to spread the properties of an object into another object.
+Putting it all together:
+
+If req.query.userId exists and has a truthy value, { userId: req.query.userId } will be evaluated and an object with a userId property will be created.
+If req.query.userId does not exist or is falsy, the expression inside the braces will evaluate to null.
+The object spread syntax ... then spreads the properties of the object (either { userId: req.query.userId } or null) into another object.
+ */
