@@ -6,12 +6,20 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable} from 'firebase/s
 import { app } from '../firebase.js'
 import { CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
+import { useNavigate } from 'react-router-dom'
+
 
 export default function CreatePost() {
     const [file, setFile] = useState(null)
     const [imageUploadProgress, setImageUploadProgress] = useState(null)
     const [imageUploadError, setImageUploadError] = useState(null)
+    const [publisError, setPublishError] = useState(null)
     const [formData, setFormData] = useState({})
+    // console.log(formData);
+
+    // https://reactrouter.com/en/main/hooks/use-navigate
+    const navigate = useNavigate()
+    
     const handleUploadImage = async () => {
         try {
             if(!file){
@@ -47,13 +55,41 @@ export default function CreatePost() {
             console.log(error);
         }
     }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        try {
+            const res = await fetch('/api/post/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            const data = await res.json()
+            
+            if(!res.ok){
+                setPublishError(data.message)
+                return
+            }
+
+            if(res.ok){
+                setPublishError(null)
+                navigate(`/post/${data.slug}`) // Redirect to the newly created post page using the slug
+            }
+        } catch (error) {
+            setPublishError('Something went wrong')
+        }
+    }
+
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
         <h1 className='text-center text-3xl my-7 font-semibold'>Create a Post</h1>
-        <form className='flex flex-col gap-4'>
+        <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
             <div className='flex flex-col gap-4 sm:flex-row justify-between'>
-                <TextInput type='text' placeholder='Title' required id='title' className='flex-1' />
-                <Select>
+                <TextInput type='text' placeholder='Title' required id='title' className='flex-1' onChange={(e) => setFormData({...formData, title: e.target.value})} /> 
+                {/* e.target.value -> Returns the value of the data at the cursor's current position. */}
+                <Select onChange={(e) => setFormData({...formData, category: e.target.value})}>
                     <option value="uncategorized">Select a category</option>
                     <option value="javascript">JavaScript</option>
                     <option value="React">React</option>
@@ -90,10 +126,17 @@ export default function CreatePost() {
                 <img src={formData.image} alt="upload" className='w-full h-72 object-cover' />
             )}
 
-            <ReactQuill theme='snow' placeholder='Write something....' className='h-72 mb-12' required />
+            <ReactQuill theme='snow' placeholder='Write something....' className='h-72 mb-12' required onChange={(value) => setFormData({...formData, content: value})} /> 
+            {/* here reactQuill automatically adding content in to <p> tag  */}
             <Button type='submit' gradientDuoTone='purpleToBlue' >
                 Publish the blog
             </Button>
+
+            {publisError && (
+                <Alert color='failure' className='mt-5'>
+                    {publisError}
+                </Alert>
+            )}
         </form>
     </div>
   )
