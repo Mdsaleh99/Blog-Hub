@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import DashSidebar from '../components/DashSidebar'
 import DashProfile from '../components/DashProfile'
 import DashPosts from '../components/DashPosts.jsx'
+import DashUsers from '../components/DashUsers.jsx'
 
 function Dashboard() {
   const location = useLocation()
@@ -32,6 +33,9 @@ setTab: This is the function that allows you to update the state variable tab. W
 
     {/* posts */}
     {tab === 'posts' && <DashPosts />}
+
+    {/* users */}
+    {tab === 'users' && <DashUsers />}
     </div>
     
   )
