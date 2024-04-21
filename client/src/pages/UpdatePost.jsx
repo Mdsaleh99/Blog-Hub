@@ -14,10 +14,10 @@ export default function UpdatePost() {
     const [file, setFile] = useState(null)
     const [imageUploadProgress, setImageUploadProgress] = useState(null)
     const [imageUploadError, setImageUploadError] = useState(null)
-    const [publisError, setPublishError] = useState(null)
+    const [publishError, setPublishError] = useState(null)
     const [formData, setFormData] = useState({})
-    // console.log(formData);
-
+     console.log(formData);
+     console.log(file);
     // https://reactrouter.com/en/main/hooks/use-params           The useParams hook is a React Router hook that allows you to access the parameters (or URL segments) of the current route in a functional component. It's commonly used when you need to access dynamic parts of the URL, such as route parameters.
     const { postId } = useParams()
 
@@ -28,7 +28,7 @@ export default function UpdatePost() {
     useEffect(() => {
         try {
             const fetchPost = async () => {
-                const  res = await fetch(`/api/post/getposts?postId=${postId}`)
+                const res = await fetch(`/api/post/getposts?postId=${postId}`);
                 const data = await res.json()
                 if(!res.ok){
                     console.log(data.message);
@@ -51,6 +51,7 @@ export default function UpdatePost() {
         try {
             if(!file){
                 setImageUploadError('Please select an image to upload')
+                return
             }
             setImageUploadError(null) // Clear the error message if there was one
             const storage = getStorage(app)
@@ -83,31 +84,56 @@ export default function UpdatePost() {
         }
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        try {
-            const res = await fetch(`/api/post/updatepost/${formData._id}/${currentUser._id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            const data = await res.json()
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault()
+    //     try {
+    //         const res = await fetch(`/api/post/updatepost/${formData._id}/${currentUser._id}`, {
+    //             method: 'PUT',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify(formData)
+    //         })
+    //         const data = await res.json()
             
-            if(!res.ok){
-                setPublishError(data.message)
-                return
-            }
+    //         if(!res.ok){
+    //             setPublishError(data.message)
+    //             return
+    //         }
 
-            if(res.ok){
-                setPublishError(null)
-                navigate(`/post/${data.slug}`) 
-            }
-        } catch (error) {
-            setPublishError('Something went wrong')
-        }
+    //         if(res.ok){
+    //             setPublishError(null)
+    //             navigate(`/post/${data.slug}`) 
+    //         }
+    //     } catch (error) {
+    //         setPublishError('Something went wrong')
+    //     }
+    // }
+
+     const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`/api/post/updatepost/${formData._id}/${currentUser._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setPublishError(data.message);
+        return;
+      }
+
+      if (res.ok) {
+        setPublishError(null);
+        navigate(`/post/${data.slug}`);
+      }
+    } catch (error) {
+      setPublishError('Something went wrong');
     }
+  };
 
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
@@ -146,8 +172,8 @@ export default function UpdatePost() {
             {imageUploadError && (
                 <Alert color='failure'>
                     {imageUploadError}
-                </Alert>
-            )}
+                </Alert>)
+            }
             
             {formData.image && (
                 <img src={formData.image} alt="upload" className='w-full h-72 object-cover' />
@@ -159,9 +185,9 @@ export default function UpdatePost() {
                 Update post
             </Button>
 
-            {publisError && (
+            {publishError && (
                 <Alert color='failure' className='mt-5'>
-                    {publisError}
+                    {publishError}
                 </Alert>
             )}
         </form>

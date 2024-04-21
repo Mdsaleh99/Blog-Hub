@@ -24,6 +24,7 @@ export default function CreatePost() {
         try {
             if(!file){
                 setImageUploadError('Please select an image to upload')
+                return
             }
             setImageUploadError(null) // Clear the error message if there was one
             const storage = getStorage(app)
