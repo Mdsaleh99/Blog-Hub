@@ -87,3 +87,44 @@ If req.query.userId exists and has a truthy value, { userId: req.query.userId } 
 If req.query.userId does not exist or is falsy, the expression inside the braces will evaluate to null.
 The object spread syntax ... then spreads the properties of the object (either { userId: req.query.userId } or null) into another object.
  */
+
+
+
+export const deletePost = async (req, res, next) => {
+    //In Express.js, req.params is an object containing properties mapped to the named route parameters. When you define a route with parameters in your Express application, such as /users/:userId, Express extracts the parameter values from the URL and makes them accessible through req.params. here :userId is the parameter in the route
+    // example-   ':userId' is a route parameter. When a request is made to a URL like /users/123, Express extracts the value 123 from the URL and stores it in req.params.userId. You can then access this value within your route handler using req.params.userId.
+    if(!req.user.isAdmin || req.user.id !== req.params.userId) {
+        return next(errorHandler(403, 'You are not allowed to delete this post'));
+    }
+
+    try {
+        await Post.findByIdAndDelete(req.params.postId)
+        res.status(200).json("The post has been deleted")
+        // findByIdAndDelete(): This is a method provided by Mongoose, which is an Object Data Modeling (ODM) library for MongoDB and Node.js. It is used to perform a deletion operation based on the document's unique identifier.
+        // req.params.postId: In an Express.js route handler, req.params is an object containing parameters that are part of the URL's path. For example, if you have a route defined as /posts/:postId, accessing req.params.postId would give you the value of postId extracted from the URL.
+    } 
+    catch (error) {
+        next(error)
+    }   
+}
+
+
+export const updatePost = async (req, res, next) => {
+    if(!req.user.isAdmin || req.user.id !== req.params.userId) {
+        return next(errorHandler(403, 'You are not allowed to delete this post'));
+    }
+
+    try {
+        const updatedPost = await Post.findByIdAndUpdate(req.params.postId, {
+            $set: {
+                title: req.body.title,
+                content: req.body.content,
+                category: req.body.category,
+                image: req.body.image
+            }
+        }, {new: true})
+        res.status(200).json(updatedPost)
+    } catch (error) {
+        next(error)
+    }
+}
