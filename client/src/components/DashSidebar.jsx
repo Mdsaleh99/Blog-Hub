@@ -67,6 +67,15 @@ function DashSidebar() {
               </Link>
             )
           }
+          {
+            currentUser.isAdmin && (
+              <Link to='/dashboard?tab=comments'>
+                <Sidebar.Item active={tab === 'comments'} icon={HiOutlineUserGroup} as='div'>
+                  Comments
+                </Sidebar.Item>
+              </Link>
+            )
+          }
           
           <Sidebar.Item icon={HiArrowSmRight} className='cursor-pointer' onClick={handleSignOut} >
             Sign out

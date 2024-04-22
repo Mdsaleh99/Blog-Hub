@@ -4,6 +4,7 @@ import DashSidebar from '../components/DashSidebar'
 import DashProfile from '../components/DashProfile'
 import DashPosts from '../components/DashPosts.jsx'
 import DashUsers from '../components/DashUsers.jsx'
+import DashComments from '../components/DashComments.jsx'
 
 function Dashboard() {
   const location = useLocation()
@@ -36,6 +37,9 @@ setTab: This is the function that allows you to update the state variable tab. W
 
     {/* users */}
     {tab === 'users' && <DashUsers />}
+
+    {/* comments */}
+    {tab === 'comments' && <DashComments />}
     </div>
     
   )
