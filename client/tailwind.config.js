@@ -5,7 +5,8 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-    "./index.html", "./src/**/*.{js,ts,jsx,tsx}",
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
     flowbite.content(),
   ],
   theme: {
@@ -13,8 +14,7 @@ export default {
   },
   plugins: [
     flowbite.plugin(),
-    require('tailwind-scrollbar'),
+    require("tailwind-scrollbar"),
   ],
-  
-}
+};
 
