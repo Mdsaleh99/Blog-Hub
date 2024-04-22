@@ -16,8 +16,8 @@ export default function UpdatePost() {
     const [imageUploadError, setImageUploadError] = useState(null)
     const [publishError, setPublishError] = useState(null)
     const [formData, setFormData] = useState({})
-     console.log(formData);
-     console.log(file);
+    //  console.log(formData);
+    //  console.log(file);
     // https://reactrouter.com/en/main/hooks/use-params           The useParams hook is a React Router hook that allows you to access the parameters (or URL segments) of the current route in a functional component. It's commonly used when you need to access dynamic parts of the URL, such as route parameters.
     const { postId } = useParams()
 
