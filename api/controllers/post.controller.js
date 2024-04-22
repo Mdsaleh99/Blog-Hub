@@ -137,3 +137,13 @@ export const updatePost = async (req, res, next) => {
     next(error);
   }
 };
+
+
+
+
+
+
+
+
+// https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable
+// https://www.geeksforgeeks.org/react-redux-hooks-useselector-and-usedispatch/?ref=header_search
