@@ -145,10 +145,10 @@ export default function UpdatePost() {
                 <Select onChange={(e) => setFormData({...formData, category: e.target.value})} value={formData.category}>
                     <option value="uncategorized">Select a category</option>
                     <option value="javascript">JavaScript</option>
-                    <option value="React">React</option>
-                    <option value="MongoDB">MongoDB</option>
-                    <option value="Java">Java</option>
-                    <option value="Python">Python</option>
+                    <option value="react">React</option>
+                    <option value="mongoDB">MongoDB</option>
+                    <option value="java">Java</option>
+                    <option value="python">Python</option>
                 </Select> 
             </div>
 
